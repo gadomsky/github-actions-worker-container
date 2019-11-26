@@ -2,7 +2,7 @@ FROM ubuntu:18.04
 MAINTAINER gadomski.kr@gmail.com
 
 RUN apt-get update
-RUN apt-get install curl -y
+RUN apt-get install curl git -y
 
 # setup worker
 
@@ -19,10 +19,6 @@ RUN chown -R touk-worker:touk-worker /actions-runner
 USER touk-worker
 WORKDIR /actions-runner
 
-RUN echo "#! /bin/bash" > entrypoint.sh
-RUN echo "echo -ne '\\\n\\\n'  | ./config.sh --url \$1 --token \$2" >> entrypoint.sh
-RUN echo "./run.sh" >> entrypoint.sh
-
-RUN chmod +x entrypoint.sh
+COPY entrypoint.sh /actions-runner
 
 ENTRYPOINT ["/actions-runner/entrypoint.sh"]
